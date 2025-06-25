@@ -120,7 +120,7 @@ abstract class Integration
         // Init log, respect possible custom 'log_path'
         if ($this->config['log']) {
             $this->config['sentry']['logger'] = new \Sentry\Logger\DebugFileLogger(
-                $this->config['log_path'] ?? \dirname(__DIR__, 5) . '/administrator/logs/sentry.log'
+                $this->config['log_path'] ?? (($_SERVER['DOCUMENT_ROOT'] ?? '') . '/administrator/logs/sentry.log')
             );
         }
 
@@ -363,7 +363,7 @@ abstract class Integration
     {
         // Simple merge to preserve any custom options.
         if ($merge && ($currentConfig = static::readConfig())) {
-            $config = $currentConfig + $config;
+            $config += $currentConfig;
         }
 
         $code = \sprintf('<?php' . "\n" . 'return %s;', \var_export($config, true));

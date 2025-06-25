@@ -113,7 +113,9 @@ class AltersentryField extends FormField
         }
         $config['sentry'] = ($sentryCustom ?? []) + $config['sentry'];
 
-        Integration::writeConfig($config);
+        if (!Integration::writeConfig($config)) {
+            return new \Exception(\sprintf('Can\'t write config file %s', Integration::configPath()));
+        }
 
         return true;
     }
