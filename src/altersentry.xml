@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="5.3" type="plugin" group="system" method="upgrade">
+	<name>plg_system_altersentry</name>
+	<description>PLG_SYSTEM_ALTERSENTRY_XML_DESCRIPTION</description>
+
+	<author>AlterBrains</author>
+	<copyright>(C) 2025 AlterBrains. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>alterbrains@gmail.com</authorEmail>
+	<authorUrl>https://alterbrains.com</authorUrl>
+
+	<creationDate>06/15/2025</creationDate>
+	<version>1.0.0</version>
+
+	<namespace path="src">AlterBrains\Plugin\System\Altersentry</namespace>
+
+	<changelogurl>https://alterbrains.com/updates/changelog.plg_system_altersentry.xml</changelogurl>
+
+	<updateservers>
+		<server type="collection" priority="1" name="AlterBrains Updates">https://alterbrains.com/updates/update.xml</server>
+	</updateservers>
+
+	<files>
+		<folder plugin="altersentry">services</folder>
+		<folder>src</folder>
+		<folder>language</folder>
+		<folder>vendor</folder>
+		<file>composer.json</file>
+		<file>composer.lock</file>
+	</files>
+
+	<scriptfile>altersentry.script.php</scriptfile>
+
+	<config>
+		<inlinehelp button="show"/>
+
+		<fields name="params"
+				addfieldprefix="AlterBrains\Plugin\System\Altersentry\Field"
+		>
+
+			<field name="altersentry" type="altersentry" hidden="true"/>
+
+			<fieldset name="basic">
+
+				<field name="enabled" type="radio" default="1"
+						layout="joomla.form.field.radio.switcher"
+						label="JENABLED" description="PLG_SYSTEM_ALTERSENTRY_FIELD_ENABLED_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+				<field name="enabled_site" type="radio" default="1"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_ENABLED_SITE" description="PLG_SYSTEM_ALTERSENTRY_FIELD_ENABLED_SITE_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+				<field name="enabled_site_url" type="text"
+						showon="enabled_site:1"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_ENABLED_SITE_URL" description="PLG_SYSTEM_ALTERSENTRY_FIELD_ENABLED_SITE_URL_DESC"
+				/>
+
+				<field name="enabled_administrator" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_ENABLED_ADMINISTRATOR" description="PLG_SYSTEM_ALTERSENTRY_FIELD_ENABLED_ADMINISTRATOR_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+				<field name="enabled_administrator_url" type="text"
+						showon="enabled_administrator:1"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_ENABLED_ADMINISTRATOR_URL" description="PLG_SYSTEM_ALTERSENTRY_FIELD_ENABLED_SITE_URL_DESC"
+				/>
+
+			</fieldset>
+
+			<fieldset name="core" label="PLG_SYSTEM_ALTERSENTRY_FIELDSET_CORE" description="PLG_SYSTEM_ALTERSENTRY_FIELDSET_CORE_DESC">
+
+				<field
+						name="sentry_dsn"
+						type="text"
+						required="true"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_DSN"
+						description="PLG_SYSTEM_ALTERSENTRY_FIELD_DSN_DESC"
+				/>
+				<field name="sentry_environment" type="text"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_ENVIRONMENT" description="PLG_SYSTEM_ALTERSENTRY_FIELD_ENVIRONMENT_DESC"
+				/>
+				<field name="sentry_release" type="text"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_RELEASE" description="PLG_SYSTEM_ALTERSENTRY_FIELD_RELEASE_DESC"
+				/>
+
+				<field name="sentry_max_breadcrumbs" type="number" min="0" max="100" step="1" default="100" class="w-auto"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_MAX_BREADCRUMBS" description="PLG_SYSTEM_ALTERSENTRY_FIELD_MAX_BREADCRUMBS_DESC"/>
+
+				<field name="sentry_max_request_body_size" type="list" default="medium" class="w-auto" validate="options"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_MAX_REQUEST_BODY_SIZE" description="PLG_SYSTEM_ALTERSENTRY_FIELD_MAX_REQUEST_BODY_SIZE_DESC"
+				>
+					<option value="never">Never</option>
+					<option value="small">Small</option>
+					<option value="medium">Medium</option>
+					<option value="always">Always</option>
+				</field>
+
+				<field name="sentry_max_value_length" type="number" min="0" step="1" default="1024" class="w-auto"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_MAX_VALUE_LENGTH" description="PLG_SYSTEM_ALTERSENTRY_FIELD_MAX_VALUE_LENGTH_DESC"/>
+
+				<field name="sentry_send_default_pii" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_SEND_DEFAULT_PII" description="PLG_SYSTEM_ALTERSENTRY_FIELD_SEND_DEFAULT_PII_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+				<field name="send_user_data" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_SEND_USER_DATA" description="PLG_SYSTEM_ALTERSENTRY_FIELD_SEND_USER_DATA_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+				<field name="log" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_LOG" description="PLG_SYSTEM_ALTERSENTRY_FIELD_LOG_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+			</fieldset>
+
+			<fieldset name="exceptions" label="PLG_SYSTEM_ALTERSENTRY_FIELDSET_EXCEPTIONS" description="PLG_SYSTEM_ALTERSENTRY_FIELDSET_EXCEPTIONS_DESC">
+
+				<field name="exceptions" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="JENABLED" description="PLG_SYSTEM_ALTERSENTRY_EXCEPTIONS_ENABLED_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+				<field name="exceptions_missing_routes" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_EXCEPTIONS_MISSING_ROUTES" description="PLG_SYSTEM_ALTERSENTRY_EXCEPTIONS_MISSING_ROUTES_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+				<field name="sentry_sample_rate" type="number" min="0" max="1" default="1" class="w-auto"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_SAMPLE_RATE" description="PLG_SYSTEM_ALTERSENTRY_FIELD_SAMPLE_RATE_DESC"/>
+
+				<field name="sentry_ignore_exceptions" type="textarea" rows="5"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_IGNORE_EXCEPTIONS" description="PLG_SYSTEM_ALTERSENTRY_FIELD_IGNORE_EXCEPTIONS_DESC"/>
+
+				<field name="sentry_error_types" type="number" min="0" step="1" default="32767"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_ERROR_TYPES" description="PLG_SYSTEM_ALTERSENTRY_FIELD_ERROR_TYPES_DESC"/>
+
+				<field name="sentry_context_lines" type="number" min="0" step="1" default="5" class="w-auto"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_CONTEXT_LINES" description="PLG_SYSTEM_ALTERSENTRY_FIELD_CONTEXT_LINES_DESC"/>
+
+			</fieldset>
+
+			<fieldset name="breadcrumbs" label="PLG_SYSTEM_ALTERSENTRY_FIELDSET_BREADCRUMBS" description="PLG_SYSTEM_ALTERSENTRY_FIELDSET_BREADCRUMBS_DESC">
+
+				<field name="breadcrumbs_route" type="radio" default="1"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_ROUTE" description="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_ROUTE_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+				<field name="breadcrumbs_cache" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_CACHE" description="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_CACHE_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+				<!--todo - do we need this? maybe in tracing only!-->
+				<field name="breadcrumbs_redirect" type="radio" default="1"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_REDIRECT" description="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_REDIRECT_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+				<field name="breadcrumbs_sql" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_SQL" description="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_SQL_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+				<field name="breadcrumbs_sql_bindings" type="radio" default="0"
+						showon="breadcrumbs_sql:1"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_SQL_BINDINGS" description="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_SQL_BINDINGS_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+				<field name="breadcrumbs_events" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_EVENTS" description="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_EVENTS_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+				<field name="breadcrumbs_events_real" type="radio" default="1"
+						showon="breadcrumbs_events:1"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_EVENTS_REAL" description="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_EVENTS_REAL_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+				<field name="breadcrumbs_events_only" type="textarea" rows="5"
+						showon="breadcrumbs_events:1"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_EVENTS_ONLY" description="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_EVENTS_ONLY_DESC"/>
+				<field name="breadcrumbs_events_ignore" type="textarea" rows="5"
+						showon="breadcrumbs_events:1"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_EVENTS_IGNORE" description="PLG_SYSTEM_ALTERSENTRY_FIELD_BREADCRUMBS_EVENTS_IGNORE_DESC"/>
+
+			</fieldset>
+
+			<fieldset name="tracing" label="PLG_SYSTEM_ALTERSENTRY_FIELDSET_TRACING" description="PLG_SYSTEM_ALTERSENTRY_FIELDSET_TRACING_DESC">
+				<field name="tracing" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="JENABLED" description="PLG_SYSTEM_ALTERSENTRY_TRACING_ENABLED_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+				<field name="sentry_traces_sample_rate" type="number" min="0" max="1" default="1" class="w-auto"
+						label="PLG_SYSTEM_ALTERSENTRY_TRACES_SAMPLE_RATE" description="PLG_SYSTEM_ALTERSENTRY_TRACES_SAMPLE_RATE_DESC"/>
+
+				<field name="tracing_missing_routes" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_TRACING_MISSING_ROUTES" description="PLG_SYSTEM_ALTERSENTRY_TRACING_MISSING_ROUTES_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+				<field name="tracing_no_breadcrumbs" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_TRACING_NO_BREADCRUMBS" description="PLG_SYSTEM_ALTERSENTRY_TRACING_NO_BREADCRUMBS_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+				<field name="tracing_continue_after_response" type="radio" default="1"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_TRACING_CONTINUE_AFTER_RESPONSE" description="PLG_SYSTEM_ALTERSENTRY_TRACING_CONTINUE_AFTER_RESPONSE_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+				<field name="tracing_cache" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_CACHE" description="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_CACHE_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+				<field name="tracing_sql" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_SQL" description="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_SQL_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+				<field name="tracing_sql_bindings" type="radio" default="0"
+						showon="tracing_sql:1"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_SQL_BINDINGS" description="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_SQL_BINDINGS_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+				<field name="tracing_sql_origin" type="radio" default="0"
+						showon="tracing_sql:1"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_SQL_ORIGIN" description="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_SQL_ORIGIN_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+				<field name="tracing_sql_origin_threshold_ms" type="number" min="0" step="1" default="100" class="w-auto"
+						showon="tracing_sql:1[AND]tracing_sql_origin:1"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_SQL_ORIGIN_THRESHOLD" description="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_SQL_ORIGIN_THRESHOLD_DESC"/>
+				<field name="tracing_sql_origin_pattern" type="text"
+						showon="tracing_sql:1[AND]tracing_sql_origin:1"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_SQL_ORIGIN_PATTERN" description="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_SQL_ORIGIN_PATTERN_DESC"/>
+
+
+				<field name="tracing_events" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_EVENTS" description="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_EVENTS_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+				<field name="tracing_events_real" type="radio" default="1"
+						showon="tracing_events:1"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_EVENTS_REAL" description="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_EVENTS_REAL_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+				<field name="tracing_events_origin" type="radio" default="0"
+						showon="tracing_events:1"
+						layout="joomla.form.field.radio.switcher"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_EVENTS_ORIGIN" description="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_EVENTS_ORIGIN_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+				<field name="tracing_events_origin_threshold_ms" type="number" min="0" step="1" default="100" class="w-auto"
+						showon="tracing_events:1[AND]tracing_events_origin:1"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_EVENTS_ORIGIN_THRESHOLD" description="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_EVENTS_ORIGIN_THRESHOLD_DESC"/>
+				<field name="tracing_events_origin_pattern" type="text"
+						showon="tracing_sql:1[AND]tracing_sql_origin:1"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_EVENTS_ORIGIN_PATTERN" description="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_EVENTS_ORIGIN_PATTERN_DESC"/>
+
+				<field name="tracing_events_only" type="textarea" rows="5"
+						showon="tracing_events:1"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_EVENTS_ONLY" description="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_EVENTS_ONLY_DESC"/>
+				<field name="tracing_events_ignore" type="textarea" rows="5"
+						showon="tracing_events:1"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_EVENTS_IGNORE" description="PLG_SYSTEM_ALTERSENTRY_FIELD_TRACING_EVENTS_IGNORE_DESC"/>
+
+			</fieldset>
+
+			<fieldset name="profiling" label="PLG_SYSTEM_ALTERSENTRY_FIELDSET_PROFILING" description="PLG_SYSTEM_ALTERSENTRY_FIELDSET_PROFILING_DESC">
+				<field name="profiling" type="radio" default="0"
+						layout="joomla.form.field.radio.switcher"
+						label="JENABLED" description="PLG_SYSTEM_ALTERSENTRY_PROFILING_ENABLED_DESC">
+					<option value="0">JDISABLED</option>
+					<option value="1">JENABLED</option>
+				</field>
+
+				<field name="sentry_profiles_sample_rate" type="number" min="0" max="1" default="1" class="w-auto"
+						label="PLG_SYSTEM_ALTERSENTRY_PROFILING_SAMPLE_RATE" description="PLG_SYSTEM_ALTERSENTRY_PROFILING_SAMPLE_RATE_SAMPLE_RATE_DESC"/>
+
+			</fieldset>
+
+			<fieldset name="advanced" label="JGLOBAL_FIELDSET_ADVANCED">
+				<field name="sentry_custom" type="textarea" rows="3"
+						label="PLG_SYSTEM_ALTERSENTRY_FIELD_CUSTOM" description="PLG_SYSTEM_ALTERSENTRY_FIELD_CUSTOM_DESC"
+				/>
+			</fieldset>
+
+		</fields>
+	</config>
+</extension>

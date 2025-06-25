@@ -1,0 +1,28 @@
+name: Create release on new tag
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  zip-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up zip with tag name
+        run: |
+          TAG_NAME=${{ github.ref_name }}
+          mkdir -p release
+          cd src
+          zip -r "../release/plg_system_altersentry_${TAG_NAME}.zip" ./*
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.SENTRY_RELEASE }}
