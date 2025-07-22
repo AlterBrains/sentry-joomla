@@ -8,6 +8,7 @@
 namespace AlterBrains\Plugin\System\Altersentry\Sentry;
 
 use Joomla\Application\ApplicationEvents;
+use Joomla\Application\Event\ApplicationErrorEvent;
 use Joomla\Application\Event\ApplicationEvent;
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Event\Application;
@@ -54,6 +55,12 @@ class IntegrationSite extends Integration
     protected ?Span $bootstrapSpan = null, $executeSpan = null, $initialiseSpan = null, $routeSpan = null, $dispatchSpan = null, $displaySpan = null, $renderSpan = null, $respondSpan = null;
 
     /**
+     * @var ?callable
+     * @since 1.0.1
+     */
+    protected mixed $oldExceptionHandler = null;
+
+    /**
      * @inheritdoc
      * @since 1.0
      */
@@ -78,9 +85,17 @@ class IntegrationSite extends Integration
                     // $app->execute() is launched after app retrieval from container.
                     try {
                         return $oldFactory(...$args);
-                    } finally {
-                        /** @var IntegrationSite $integration */
-                        $integration->onBeforeExecute(\microtime(true));
+                    } catch (\Throwable $e) {
+                        $error = true;
+
+                        throw $e;
+                    }
+                    finally {
+                        // app.bootstrap can fail!
+                        if (!isset($error)) {
+                            /** @var IntegrationSite $integration */
+                            $integration->onBeforeExecute(\microtime(true));
+                        }
                     }
                 };
             })(...)->call($container->getResource(static::APP_CONTAINER_RESOURCE), $this);
@@ -138,8 +153,15 @@ class IntegrationSite extends Integration
 
         // Setup exception handler
         if ($this->config['exceptions'] ?? false) {
-            $dispatcher->addListener('onError', [$this, 'onUnhandledException'], \PHP_INT_MAX);
-            $dispatcher->addListener(ApplicationEvents::ERROR, [$this, 'onUnhandledException'], \PHP_INT_MAX);
+            $dispatcher->addListener('onError', [$this, 'onError'], \PHP_INT_MAX);
+            $dispatcher->addListener(ApplicationEvents::ERROR, [$this, 'onError'], \PHP_INT_MAX);
+
+            // setup global handler right now, we need to catch error during app.bootstrap as well,
+            // before Joomla adds own handler.
+            // And store currently available Symfony\Component\ErrorHandler\ErrorHandler handler
+            // Note: CMSApplication::execute() catches Throwable and triggers error events + \Joomla\CMS\Exception\ExceptionHandler::handleException() next
+            // Hence, original Symfony handler is not used in $app->execute();
+            $this->oldExceptionHandler = \set_exception_handler([$this, 'onUnhandledException']);
         }
 
         $dispatcher::$beforeEventCalls = [
@@ -324,12 +346,24 @@ class IntegrationSite extends Integration
     }
 
     /**
+     * Native Joomla event.
      * @since 1.0
      */
-    public function onUnhandledException(ErrorEvent $event): void
+    public function onError(ErrorEvent|ApplicationErrorEvent $e): void
+    {
+        // No sense to call previous Symfony handler.
+        $this->oldExceptionHandler = null;
+
+        $this->onUnhandledException($e->getError());
+    }
+
+    /**
+     * @since 1.0.1
+     */
+    public function onUnhandledException(\Throwable $e): void
     {
         // Set response status code from error, because Joomla error response still has 200
-        $this->responseStatusCode = $event->getError()->getCode();
+        $this->responseStatusCode = $e->getCode();
 
         // Skip 404s on demand
         if (!$this->config['exceptions_missing_routes'] && $this->responseStatusCode === 404) {
@@ -339,7 +373,13 @@ class IntegrationSite extends Integration
         $this->configureScope();
         $this->configureScopeBeforeSend();
 
-        SentrySdk::getCurrentHub()->captureException($event->getError());
+        SentrySdk::getCurrentHub()->captureException($e);
+
+        // Call previous Symfony handler.
+        if ($this->oldExceptionHandler) {
+            ($this->oldExceptionHandler)($e);
+            $this->oldExceptionHandler = null;
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -681,7 +721,7 @@ class IntegrationSite extends Integration
     public function onAfterRespond(float $endTime, Application\AfterRespondEvent|ApplicationEvent $e): void
     {
         // Note: Joomla error response still has 200 here
-        // We could already set the correct code from error before, in onUnhandledException()
+        // We could already set the correct code from error before, in onError()
         $this->responseStatusCode ??= $e->getApplication()->getResponse()->getStatusCode();
 
         $this->finishRespond($endTime, $e->getApplication()->getResponse());
