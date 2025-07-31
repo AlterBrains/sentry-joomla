@@ -97,28 +97,18 @@ abstract class Integration
         $this->config = $config;
 
         // House keeping
-        if (!$this->config['tracing']) {
+        if (empty($this->config['tracing'])) {
             $this->config['tracing_events'] = false;
             $this->config['tracing_sql'] = false;
             $this->config['tracing_cache'] = false;
-            // todo - check tracing_no_breadcrumbs, what if tracing transaction is not finished, but we have an error?
-            // there is no trace transaction in this case
-        } elseif ($this->config['tracing_no_breadcrumbs']) {
-            $this->config['breadcrumbs'] = false;
         }
 
-        if (!$this->config['breadcrumbs']) {
-            $this->config['breadcrumbs_events'] = false;
-            $this->config['breadcrumbs_sql'] = false;
-            $this->config['breadcrumbs_cache'] = false;
-        }
-
-        if (!$this->config['profiling']) {
+        if (empty($this->config['profiling'])) {
             $this->config['sentry']['profiles_sample_rate'] = 0;
         }
 
         // Init log, respect possible custom 'log_path'
-        if ($this->config['log']) {
+        if (!empty($this->config['log'])) {
             $this->config['sentry']['logger'] = new \Sentry\Logger\DebugFileLogger(
                 $this->config['log_path'] ?? (($_SERVER['DOCUMENT_ROOT'] ?? '') . '/administrator/logs/sentry.log')
             );

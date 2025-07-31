@@ -235,13 +235,6 @@
 					<option value="1">JENABLED</option>
 				</field>
 
-				<field name="tracing_no_breadcrumbs" type="radio" default="0"
-						layout="joomla.form.field.radio.switcher"
-						label="PLG_SYSTEM_ALTERSENTRY_TRACING_NO_BREADCRUMBS" description="PLG_SYSTEM_ALTERSENTRY_TRACING_NO_BREADCRUMBS_DESC">
-					<option value="0">JDISABLED</option>
-					<option value="1">JENABLED</option>
-				</field>
-
 				<field name="tracing_continue_after_response" type="radio" default="1"
 						layout="joomla.form.field.radio.switcher"
 						label="PLG_SYSTEM_ALTERSENTRY_TRACING_CONTINUE_AFTER_RESPONSE" description="PLG_SYSTEM_ALTERSENTRY_TRACING_CONTINUE_AFTER_RESPONSE_DESC">
