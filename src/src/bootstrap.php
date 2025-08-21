@@ -5,7 +5,6 @@
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL
  */
 
-/** @noinspection PhpFullyQualifiedNameUsageInspection */
 defined('_JEXEC') or die;
 
 // Detect app type (can be defined before including this file.)

@@ -84,6 +84,21 @@ final class LogsAggregator
             $log->setAttribute('sentry.sdk.version', $client->getSdkVersion());
         }
 
+        $hub->configureScope(function (Scope $scope) use ($log) {
+            $user = $scope->getUser();
+            if ($user !== null) {
+                if ($user->getId() !== null) {
+                    $log->setAttribute('user.id', $user->getId());
+                }
+                if ($user->getEmail() !== null) {
+                    $log->setAttribute('user.email', $user->getEmail());
+                }
+                if ($user->getUsername() !== null) {
+                    $log->setAttribute('user.name', $user->getUsername());
+                }
+            }
+        });
+
         foreach ($values as $key => $value) {
             $log->setAttribute("sentry.message.parameter.{$key}", $value);
         }
@@ -93,15 +108,27 @@ final class LogsAggregator
         foreach ($attributes as $key => $value) {
             $attribute = Attribute::tryFromValue($value);
 
+            if (!\is_string($key)) {
+                if ($sdkLogger !== null) {
+                    $sdkLogger->info(
+                        \sprintf("Dropping log attribute with non-string key '%s' and value of type '%s'.", $key, \gettype($value))
+                    );
+                }
+
+                continue;
+            }
+
             if ($attribute === null) {
                 if ($sdkLogger !== null) {
                     $sdkLogger->info(
                         \sprintf("Dropping log attribute {$key} with value of type '%s' because it is not serializable or an unsupported type.", \gettype($value))
                     );
                 }
-            } else {
-                $log->setAttribute($key, $attribute);
+
+                continue;
             }
+
+            $log->setAttribute($key, $attribute);
         }
 
         $log = ($options->getBeforeSendLogCallback())($log);

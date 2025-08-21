@@ -141,8 +141,8 @@ abstract class Integration
      */
     public static function addBreadcrumb(
         string|Breadcrumb $level,
-        string $type = null,
-        string $category = null,
+        ?string $type = null,
+        ?string $category = null,
         ?string $message = null,
         array $metadata = [],
         ?float $timestamp = null

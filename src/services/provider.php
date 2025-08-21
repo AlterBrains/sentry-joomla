@@ -5,13 +5,12 @@
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL
  */
 
-\defined('_JEXEC') or die;
+defined('_JEXEC') or die;
 
-use AlterBrains\Plugin\System\Altersentry\Sentry\Integration;
-
+//use AlterBrains\Plugin\System\Altersentry\Sentry\Integration;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
-use Joomla\Event\DispatcherInterface;
+//use Joomla\Event\DispatcherInterface;
 
 return new class () implements ServiceProviderInterface {
     /**

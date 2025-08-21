@@ -153,7 +153,9 @@ final class ErrorHandler
     private function __construct()
     {
         $this->exceptionReflection = new \ReflectionProperty(\Exception::class, 'trace');
-        $this->exceptionReflection->setAccessible(true);
+        if (\PHP_VERSION_ID < 80100) {
+            $this->exceptionReflection->setAccessible(true);
+        }
     }
 
     /**
@@ -458,9 +460,9 @@ final class ErrorHandler
      * @param string                           $file      The filename the backtrace was raised in
      * @param int                              $line      The line number the backtrace was raised at
      *
-     * @return array<int, mixed>
-     *
      * @psalm-param list<StacktraceFrame> $backtrace
+     *
+     * @return array<int, mixed>
      */
     private function cleanBacktraceFromErrorHandlerFrames(array $backtrace, string $file, int $line): array
     {
