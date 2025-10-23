@@ -26,13 +26,13 @@ class PlgSystemAltersentryInstallerScript
      * @var string
      * @since 2.0
      */
-    protected $minimumPhp = '8.1';
+    protected $minimumPhp = '8.3';
 
     /**
      * @var string
      * @since 2.0
      */
-    protected $minimumJoomla = '4.4';
+    protected $minimumJoomla = '5.4';
 
     /**
      * @return bool

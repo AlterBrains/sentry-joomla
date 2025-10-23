@@ -389,6 +389,8 @@ class IntegrationSite extends Integration
     /**
      * Emulated event on app retrieval from container.
      * $app->execute() is called next in /includes/app.php
+     * Note: Joomla6+ has own onBeforeExecute event, but it's not really informative because it's executed after
+     * loading of 'behavior' and 'system' plugins in CMSApplication::execute()), while we capture the full $app->execute().
      * @since 1.0
      */
     public function onBeforeExecute(float $startTime): void
