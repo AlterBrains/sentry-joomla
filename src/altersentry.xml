@@ -9,8 +9,8 @@
 	<authorEmail>alterbrains@gmail.com</authorEmail>
 	<authorUrl>https://alterbrains.com</authorUrl>
 
-	<creationDate>23/10/2025</creationDate>
-	<version>2.0.0</version>
+	<creationDate>24/10/2025</creationDate>
+	<version>2.0.1</version>
 
 	<namespace path="src">AlterBrains\Plugin\System\Altersentry</namespace>
 
