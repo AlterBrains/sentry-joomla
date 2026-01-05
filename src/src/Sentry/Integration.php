@@ -47,7 +47,7 @@ abstract class Integration
     /**
      * @since 1.0
      */
-    protected ?Transaction $transaction;
+    protected ?Transaction $transaction = null;
 
     /**
      * @since 1.0

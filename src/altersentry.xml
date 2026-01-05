@@ -4,13 +4,13 @@
 	<description>PLG_SYSTEM_ALTERSENTRY_XML_DESCRIPTION</description>
 
 	<author>AlterBrains</author>
-	<copyright>(C) 2025 AlterBrains. All rights reserved.</copyright>
+	<copyright>(C) 2026 AlterBrains. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>alterbrains@gmail.com</authorEmail>
 	<authorUrl>https://alterbrains.com</authorUrl>
 
-	<creationDate>24/10/2025</creationDate>
-	<version>2.0.1</version>
+	<creationDate>01/05/2026</creationDate>
+	<version>2.0.2</version>
 
 	<namespace path="src">AlterBrains\Plugin\System\Altersentry</namespace>
 
