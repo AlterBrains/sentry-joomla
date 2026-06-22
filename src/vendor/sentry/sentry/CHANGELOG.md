@@ -1,5 +1,194 @@
 # CHANGELOG
 
+## 4.28.0
+
+The Sentry SDK team is happy to announce the immediate availability of Sentry PHP SDK v4.28.0.
+
+### Features
+
+- Add `SentryPropagator` to inject and extract `sentry-trace` headers in OpenTelemetry contexts. [(#2105)](https://github.com/getsentry/sentry-php/pull/2105)
+
+### Bug Fixes
+
+- Keep feature flag values serialized as a JSON list when a flag is updated multiple times. [(#2104)](https://github.com/getsentry/sentry-php/pull/2104)
+
+## 4.27.0
+
+The Sentry SDK team is happy to announce the immediate availability of Sentry PHP SDK v4.27.0.
+
+### Features
+
+- Add `profiles_sampler` option. [(#2082)](https://github.com/getsentry/sentry-php/pull/2082)
+
+### Bug Fixes
+
+- Preserve manually configured user attributes on logs and metrics when `send_default_pii` is disabled. [(#2083)](https://github.com/getsentry/sentry-php/pull/2083)
+
+### Misc
+
+- Add Mago static analysis to CI. [(#2020)](https://github.com/getsentry/sentry-php/pull/2020)
+
+## 4.26.0
+
+The Sentry SDK team is happy to announce the immediate availability of Sentry PHP SDK v4.26.0.
+
+### Features
+
+- Add `AgentClient` and `AgentClientBuilder` to hand off envelopes to a local Sentry agent. [(#2062)](https://github.com/getsentry/sentry-php/pull/2062)
+- Add fallback HTTP delivery for `AgentClient` when the local Sentry agent is unavailable. [(#2072)](https://github.com/getsentry/sentry-php/pull/2072)
+- Add `LogToSentryIssueHandler` Monolog handler to capture log messages as Sentry issues. [(#2075)](https://github.com/getsentry/sentry-php/pull/2075)
+
+### Bug Fixes
+
+- Respect `send_default_pii` before attaching user attributes to Sentry logs. [(#2076)](https://github.com/getsentry/sentry-php/pull/2076)
+- Ignore invalid propagated `sentry-sample_rand` baggage values and generate a valid sample random value instead. [(#2077)](https://github.com/getsentry/sentry-php/pull/2077)
+
+## 4.25.0
+
+The Sentry SDK team is happy to announce the immediate availability of Sentry PHP SDK v4.25.0.
+
+### Features
+
+- Add `ExceptionToSentryIssueHandler` Monolog handler that only captures exceptions as Sentry issues without converting log messages to errors. [(#2061)](https://github.com/getsentry/sentry-php/pull/2061)
+- Add `metric_flush_threshold` option to automatically flush buffered metrics after a configured number of metric records. [(#2059)](https://github.com/getsentry/sentry-php/pull/2059)
+
+```php
+\Sentry\init([
+    'dsn' => '__YOUR_DSN__',
+    'metric_flush_threshold' => 50,
+]);
+```
+
+### Bug Fixes
+
+- Prevent PHP warnings when trying to increase the memory limit for out-of-memory error handling. [(#2063)](https://github.com/getsentry/sentry-php/pull/2063)
+
+### Misc
+
+- Use a `RingBuffer` for log storage when `log_flush_threshold` is not set to prevent unbounded memory growth, with a hard cap of 1000 records. [(#2058)](https://github.com/getsentry/sentry-php/pull/2058)
+- Add `ext-excimer` as a Composer suggestion to surface its requirement for profiling. [(#2057)](https://github.com/getsentry/sentry-php/pull/2057)
+
+## 4.24.0
+
+The Sentry SDK team is happy to announce the immediate availability of Sentry PHP SDK v4.24.0.
+
+### Bug Fixes
+
+- Serialize native PHP enums as readable enum strings, including backed enum values, instead of opaque `Object` strings. [(#2038)](https://github.com/getsentry/sentry-php/pull/2038)
+- Exclude `AGENTS.md` and `CLAUDE.md` from distribution archives. [(#2046)](https://github.com/getsentry/sentry-php/pull/2046)
+
+### Misc
+
+- Deprecate `Sentry\Monolog\Handler` in favor of `Sentry\Monolog\LogsHandler` with the `enable_logs` SDK option. [(#2051)](https://github.com/getsentry/sentry-php/pull/2051)
+
+## 4.23.1
+
+The Sentry SDK team is happy to announce the immediate availability of Sentry PHP SDK v4.23.1.
+
+### Bug Fixes
+
+- Use `server.address` log attribute instead of `sentry.server.address`. [(#2040)](https://github.com/getsentry/sentry-php/pull/2040)
+
+## 4.23.0
+
+The Sentry SDK team is happy to announce the immediate availability of Sentry PHP SDK v4.23.0.
+
+### Features
+
+- Add `OTLPIntegration` support to interoperate with OpenTelemetry traces. [(#2030)](https://github.com/getsentry/sentry-php/pull/2030)
+
+```php
+\Sentry\init([
+    'dsn' => '__YOUR_DSN__',
+    'integrations' => [
+        new \Sentry\Integration\OTLPIntegration(),
+    ],
+]);
+```
+
+- Add `log_flush_threshold` to automatically flush buffered logs after a configured number of log records. [(#2032)](https://github.com/getsentry/sentry-php/pull/2032)
+```php
+\Sentry\init([
+    'dsn' => '__YOUR_DSN__',
+    'enable_logs' => true,
+    'log_flush_threshold' => 20,
+]);
+```
+
+
+## 4.22.0
+
+The Sentry SDK team is happy to announce the immediate availability of Sentry PHP SDK v4.22.0.
+
+### Features
+
+- Add support for the client report protocol without collecting client reports yet. [(#1978)](https://github.com/getsentry/sentry-php/pull/1978)
+- Add `strict_trace_continuation` support to only continue incoming traces when the upstream baggage `org_id` matches the SDK org ID. [(#2016)](https://github.com/getsentry/sentry-php/pull/2016)
+
+Example:
+```php
+\Sentry\init([
+    'dsn' => '__YOUR_DSN__',
+    'strict_trace_continuation' => true,
+]);
+```
+
+### Bug Fixes
+
+- Preserve sub-second timestamps for Monolog breadcrumbs. [(#2018)](https://github.com/getsentry/sentry-php/pull/2018)
+
+## 4.21.0
+
+The Sentry SDK team is happy to announce the immediate availability of Sentry PHP SDK v4.21.0.
+
+### Features
+
+- Add `RuntimeContext` and context lifecycle helpers for long-lived runtimes such as FrankenPHP and RoadRunner. [(#2011)](https://github.com/getsentry/sentry-php/pull/2011)
+
+Long-lived worker runtimes keep process memory between requests, which can cause scope data to leak from one request to the next.
+`RuntimeContext` isolates SDK state per request and flushes buffered telemetry when the request context ends.
+Data configured before a runtime context is started is copied into each new context as baseline scope data.
+
+Example:
+
+```php
+\Sentry\init([
+    'dsn' => '__YOUR_DSN__',
+]);
+
+$handler = static function (): void {
+    \Sentry\withContext(static function (): void {
+        // Handle one request.
+    });
+};
+
+while (frankenphp_handle_request($handler)) {}
+```
+
+When using a runtime context, manual `\Sentry\flush()` calls are not needed for request teardown.
+It is still necessary to finish transactions explicitly.
+
+## 4.20.0
+
+The Sentry SDK team is happy to announce the immediate availability of Sentry PHP SDK v4.20.0.
+
+### Features
+
+- Add a high-level `flush()` helper that flushes all buffered telemetry resources (logs and trace metrics). [(#1989)](https://github.com/getsentry/sentry-php/pull/1989)
+- Add share handles to cURL (persistent for PHP >= 8.5, non-persistent otherwise). [(#1996)](https://github.com/getsentry/sentry-php/pull/1996)
+- Handle HTTP 413 responses explicitly with a dedicated `content_too_large` status. [(#2008)](https://github.com/getsentry/sentry-php/pull/2008)
+
+### Bug Fixes
+
+- Normalize Spotlight URLs to optionally allow trailing `/stream`. [(#1984)](https://github.com/getsentry/sentry-php/pull/1984)
+- Monolog messages are now filtered by their original Monolog level before being mapped to Sentry log levels. [(#1992)](https://github.com/getsentry/sentry-php/pull/1992)
+- Handle bracketed IPv6 addresses (such as `[::1]`). [(#2007)](https://github.com/getsentry/sentry-php/pull/2007)
+- Ignore propagated baggage `sample_rate` when no `sentry-trace` header is present. [(#2002)](https://github.com/getsentry/sentry-php/pull/2002)
+
+### Misc
+
+- Add the `traceMetrics()` helper and deprecate `trace_metrics()`. [(#1995)](https://github.com/getsentry/sentry-php/pull/1995)
+
 ## 4.19.1
 
 The Sentry SDK team is happy to announce the immediate availability of Sentry PHP SDK v4.19.1.

@@ -18,7 +18,7 @@ class LogsHandler implements HandlerInterface
     /**
      * The minimum logging level at which this handler will be triggered.
      *
-     * @var LogLevel
+     * @var LogLevel|\Monolog\Level|int
      */
     private $logLevel;
 
@@ -32,10 +32,10 @@ class LogsHandler implements HandlerInterface
     /**
      * Creates a new Monolog handler that converts Monolog logs to Sentry logs.
      *
-     * @param LogLevel|null $logLevel the minimum logging level at which this handler will be triggered and collects the logs
-     * @param bool          $bubble   whether the messages that are handled can bubble up the stack or not
+     * @param LogLevel|\Monolog\Level|int|null $logLevel the minimum logging level at which this handler will be triggered and collects the logs
+     * @param bool                             $bubble   whether the messages that are handled can bubble up the stack or not
      */
-    public function __construct(?LogLevel $logLevel = null, bool $bubble = true)
+    public function __construct($logLevel = null, bool $bubble = true)
     {
         $this->logLevel = $logLevel ?? LogLevel::debug();
         $this->bubble = $bubble;
@@ -46,7 +46,13 @@ class LogsHandler implements HandlerInterface
      */
     public function isHandling($record): bool
     {
-        return self::getSentryLogLevelFromMonologLevel($record['level'])->getPriority() >= $this->logLevel->getPriority();
+        if ($this->logLevel instanceof LogLevel) {
+            return self::getSentryLogLevelFromMonologLevel($record['level'])->getPriority() >= $this->logLevel->getPriority();
+        } elseif ($this->logLevel instanceof \Monolog\Level) {
+            return $record['level'] >= $this->logLevel->value;
+        }
+
+        return $record['level'] >= $this->logLevel;
     }
 
     /**
@@ -57,7 +63,7 @@ class LogsHandler implements HandlerInterface
         if (!$this->isHandling($record)) {
             return false;
         }
-        // Do not collect logs for exceptions, they should be handled seperately by the `Handler` or `captureException`
+        // Do not collect logs for exceptions, they should be handled separately by `ExceptionToSentryIssueHandler` or `captureException`
         if (isset($record['context']['exception']) && $record['context']['exception'] instanceof \Throwable) {
             return false;
         }

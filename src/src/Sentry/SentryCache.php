@@ -32,7 +32,11 @@ class SentryCache extends Cache
      */
     protected bool $breadcrumbsCache, $tracingCache;
 
-    /** @noinspection MagicMethodsValidityInspection */
+    /**
+     * @noinspection MagicMethodsValidityInspection
+     * @noinspection PhpMissingParentConstructorInspection
+     * @since 1.0
+     */
     public function __construct(Cache $cache, string $controllerType, bool $breadcrumbsCache, bool $tracingCache)
     {
         $this->oldCache         = $cache;
