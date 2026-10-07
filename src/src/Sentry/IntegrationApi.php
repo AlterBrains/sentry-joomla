@@ -15,8 +15,8 @@ namespace AlterBrains\Plugin\System\Altersentry\Sentry;
  */
 class IntegrationApi extends Integration
 {
-    protected const APP_TYPE = 'api';
-    protected const APP_CONTAINER_RESOURCE = 'JApplicationApi';
+    protected const string APP_TYPE = 'api';
+    protected const string APP_CONTAINER_RESOURCE = 'JApplicationApi';
 
     // todo
 }

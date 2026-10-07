@@ -17,6 +17,6 @@ require __DIR__ . '/IntegrationSite.php';
  */
 class IntegrationAdministrator extends IntegrationSite
 {
-    protected const APP_TYPE = 'administrator';
-    protected const APP_CONTAINER_RESOURCE = 'JApplicationAdministrator';
+    protected const string APP_TYPE = 'administrator';
+    protected const string APP_CONTAINER_RESOURCE = 'JApplicationAdministrator';
 }

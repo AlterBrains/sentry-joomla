@@ -35,8 +35,8 @@ use Sentry\Tracing\TransactionSource;
  */
 class IntegrationSite extends Integration
 {
-    protected const APP_TYPE = 'site';
-    protected const APP_CONTAINER_RESOURCE = 'JApplicationSite';
+    protected const string APP_TYPE = 'site';
+    protected const string APP_CONTAINER_RESOURCE = 'JApplicationSite';
 
     /**
      * @since 1.0

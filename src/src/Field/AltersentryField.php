@@ -9,6 +9,7 @@
 namespace AlterBrains\Plugin\System\Altersentry\Field;
 
 use AlterBrains\Plugin\System\Altersentry\Sentry\Integration;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\Registry\Registry;
 
@@ -64,10 +65,11 @@ class AltersentryField extends FormField
         $config['sentry_send_default_pii'] = (bool) $config['sentry_send_default_pii'];
 
         // Exceptions
-        $config['sentry_sample_rate']       = (float) $config['sentry_sample_rate'];
-        $config['sentry_context_lines']     = (int) $config['sentry_context_lines'];
-        $config['sentry_ignore_exceptions'] = $this->normalizeMultiInput($config['sentry_ignore_exceptions']);
-        $config['sentry_error_types']       = (int) $config['sentry_error_types'];
+        $config['sentry_sample_rate']            = (float) $config['sentry_sample_rate'];
+        $config['sentry_context_lines']          = (int) $config['sentry_context_lines'];
+        $config['sentry_ignore_exceptions']      = $this->normalizeMultiInput($config['sentry_ignore_exceptions']);
+        $config['ignore_exception_codes'] = $this->normalizeMultiInput($config['ignore_exception_codes']);
+        $config['sentry_error_types']            = (int) $config['sentry_error_types'];
 
         // Breadcrumbs
         $config['breadcrumbs_route']         = (bool) $config['breadcrumbs_route'];
@@ -115,6 +117,25 @@ class AltersentryField extends FormField
 
         if (!Integration::writeConfig($config)) {
             return new \Exception(\sprintf('Can\'t write config file %s', Integration::configPath()));
+        }
+
+        // Check defines.php presence
+        if (!empty($config['enabled'])) {
+            $defines = [
+                'enabled_site' => JPATH_ROOT . '/defines.php',
+                'enabled_administrator' => JPATH_ROOT . '/administrator/defines.php',
+                // cli uses site defines
+                'enabled_cli' => JPATH_ROOT . '/defines.php',
+                'enabled_api' => JPATH_ROOT . '/api/defines.php',
+            ];
+            foreach ($defines as $configVal => $filepath) {
+                if (!empty($config[$configVal]) && !\is_file($filepath)) {
+                    Factory::getApplication()->enqueueMessage(
+                        \sprintf('File %s was not found. Please create this file according to manual.', $filepath),
+                        'error'
+                    );
+                }
+            }
         }
 
         return true;

@@ -9,8 +9,8 @@
 	<authorEmail>alterbrains@gmail.com</authorEmail>
 	<authorUrl>https://alterbrains.com</authorUrl>
 
-	<creationDate>06/22/2026</creationDate>
-	<version>2.1.0</version>
+	<creationDate>10/07/2026</creationDate>
+	<version>2.2.0</version>
 
 	<namespace path="src">AlterBrains\Plugin\System\Altersentry</namespace>
 
@@ -148,6 +148,9 @@
 
 				<field name="sentry_ignore_exceptions" type="textarea" rows="5"
 						label="PLG_SYSTEM_ALTERSENTRY_FIELD_IGNORE_EXCEPTIONS" description="PLG_SYSTEM_ALTERSENTRY_FIELD_IGNORE_EXCEPTIONS_DESC"/>
+
+				<field name="ignore_exception_codes" type="textarea" rows="5"
+					   label="PLG_SYSTEM_ALTERSENTRY_FIELD_IGNORE_EXCEPTION_CODES" description="PLG_SYSTEM_ALTERSENTRY_FIELD_IGNORE_EXCEPTION_CODES_DESC"/>
 
 				<field name="sentry_error_types" type="number" min="0" step="1" default="32767"
 						label="PLG_SYSTEM_ALTERSENTRY_FIELD_ERROR_TYPES" description="PLG_SYSTEM_ALTERSENTRY_FIELD_ERROR_TYPES_DESC"/>

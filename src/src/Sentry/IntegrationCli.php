@@ -17,8 +17,8 @@ use Joomla\Console\Application as BaseConsoleApplication;
  */
 class IntegrationCli extends Integration
 {
-    protected const APP_TYPE = 'cli';
-    protected const APP_CONTAINER_RESOURCE = BaseConsoleApplication::class;
+    protected const string APP_TYPE = 'cli';
+    protected const string APP_CONTAINER_RESOURCE = BaseConsoleApplication::class;
 
     // todo
 }

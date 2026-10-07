@@ -154,13 +154,30 @@ abstract class Integration
         );
     }
 
-
-    public function beforeSend(\Sentry\Event $event): \Sentry\Event
+    /**
+     * This function is called with an event object, and can return a modified event object, or null to skip reporting the event.
+     * @since 1.0
+     */
+    public function beforeSend(\Sentry\Event $event, ?\Sentry\EventHint $hint): ?\Sentry\Event
     {
+        /** @noinspection PhpRedundantOptionalArgumentInspection */
+        if ($hint !== null
+            && !empty($this->config['ignore_exception_codes'])
+            && ($code = $hint->exception?->getCode())
+            && \in_array($code, $this->config['ignore_exception_codes'], false)
+        ) {
+            return null;
+        }
+
         return $event;
     }
 
-    public function beforeSendTransaction(\Sentry\Event $transaction): \Sentry\Event
+    /**
+     * This function is called with a transaction event object, and can return a modified transaction event object, or null to skip reporting the event.
+     * @since 1.0
+     * @noinspection PhpUnusedParameterInspection
+     */
+    public function beforeSendTransaction(\Sentry\Event $transaction, ?\Sentry\EventHint $hint): ?\Sentry\Event
     {
         return $transaction;
     }
