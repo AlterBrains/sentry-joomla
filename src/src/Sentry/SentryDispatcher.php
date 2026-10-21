@@ -97,7 +97,7 @@ class SentryDispatcher extends Dispatcher
     }
 
     /**
-     * @inheridoc
+     * @inheritDoc
      * @since        1.0
      */
     public function dispatch(string $name, ?EventInterface $event = null): EventInterface

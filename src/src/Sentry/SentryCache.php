@@ -49,7 +49,7 @@ class SentryCache extends Cache
     }
 
     /**
-     * @inheridoc
+     * @inheritDoc
      * @since 1.0
      */
     public function get($id, $group = null)
@@ -104,7 +104,7 @@ class SentryCache extends Cache
     }
 
     /**
-     * @inheridoc
+     * @inheritDoc
      * @since 1.0
      */
     public function store($data, $id, $group = null)
@@ -157,7 +157,7 @@ class SentryCache extends Cache
     }
 
     /**
-     * @inheridoc
+     * @inheritDoc
      * @since 1.0
      */
     public function remove($id, $group = null)
@@ -208,7 +208,7 @@ class SentryCache extends Cache
     }
 
     /**
-     * @inheridoc
+     * @inheritDoc
      * @since 1.0
      */
     public function clean($group = null, $mode = 'group')
@@ -259,7 +259,7 @@ class SentryCache extends Cache
     }
 
     /**
-     * @inheridoc
+     * @inheritDoc
      * @since 1.0
      */
     public function contains($id, $group = null)

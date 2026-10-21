@@ -25,7 +25,7 @@ class SentryCacheControllerFactory extends CacheControllerFactory
     }
 
     /**
-     * @inheridoc
+     * @inheritDoc
      * @since 1.0
      */
     public function createCacheController($type = 'output', $options = []): CacheController
